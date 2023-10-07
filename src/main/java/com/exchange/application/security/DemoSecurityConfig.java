@@ -1,4 +1,4 @@
-package com.osuliman.spring.rest.essential.application.security;
+package com.exchange.application.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

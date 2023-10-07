@@ -1,7 +1,7 @@
-package com.osuliman.spring.rest.essential.application;
+package com.exchange.application;
 
-import com.osuliman.spring.rest.essential.domain.Student;
-import com.osuliman.spring.rest.essential.domain.StudentService;
+import com.exchange.domain.entity.Student;
+import com.exchange.domain.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;

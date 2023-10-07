@@ -1,6 +1,7 @@
-package com.osuliman.spring.rest.essential.domain;
+package com.exchange.domain.service;
 
-import com.osuliman.spring.rest.essential.infrastructure.StudentRepository;
+import com.exchange.domain.entity.Student;
+import com.exchange.infrastructure.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

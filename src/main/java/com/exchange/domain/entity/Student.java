@@ -1,4 +1,4 @@
-package com.osuliman.spring.rest.essential.domain;
+package com.exchange.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
-package com.osuliman.spring.rest.essential.infrastructure;
+package com.exchange.infrastructure;
 
-import com.osuliman.spring.rest.essential.domain.Student;
+import com.exchange.domain.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

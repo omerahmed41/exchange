@@ -8,11 +8,11 @@
 		<version>3.1.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.springRESTEssential</groupId>
-	<artifactId>springRESTEssential</artifactId>
+	<groupId>com.exchange</groupId>
+	<artifactId>exchange</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springRESTEssential</name>
-	<description>spring REST Essential</description>
+	<name>exchange</name>
+	<description>spring exchange</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
