@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public final class OrderService {
@@ -46,11 +48,14 @@ public final class OrderService {
         return this.trades;
     }
 
-    public String addMultipleReturnString(List<Order> orders) {
+    public Map<String, Object> addMultipleOrdersReturnOutput(List<Order> orders) {
         for (Order order : orders) {
             addOrder(order);
         }
-        return tradeService.formatTradesString(trades) + OrderBook.formatOrderBook(this.orderBook);
+        Map<String, Object> response = new HashMap<>();
+        response.put("trades", this.trades);
+        response.put("orderBook", this.orderBook);
+        return response;
     }
 
 

@@ -15,7 +15,7 @@ public class Parser {
     private static final int SIDE_FIELD_ORDER = 1;
     private static final int ID_FIELD_ORDER = 0;
 
-    public static List<Order> getOrders(String rawOrders) {
+    public static List<Order> parseOrders(String rawOrders) {
         String[] lines = rawOrders.split("\n");
         List<Order> orders = new ArrayList<>();
 

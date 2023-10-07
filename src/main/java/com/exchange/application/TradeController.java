@@ -27,9 +27,9 @@ public final class TradeController {
     }
 
     @GetMapping("/string")
-    public List<String> getAllTradesString() {
+    public String getAllTradesString() {
         List<Trade> trades = tradeService.getAllTrades();
-        return tradeService.formatTrades(trades);
+        return Formatter.formatTradesString(trades);
     }
 
 

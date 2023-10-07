@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -47,11 +48,15 @@ public final class OrderController {
     @PostMapping(value = "/addBulk", consumes = "text/plain")
     public ResponseEntity<?> addOrders(@RequestBody String rawOrders) {
         try {
-            List<Order> orders = Parser.getOrders(rawOrders);
+            List<Order> orders = Parser.parseOrders(rawOrders);
 
-            String result = orderService.addMultipleReturnString(orders);
+            Map<String, Object> result = orderService.addMultipleOrdersReturnOutput(orders);
 
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+            String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
+            String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
+
+            return new ResponseEntity<>(trades + orderBook, HttpStatus.CREATED);
+
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while processing the orders.", HttpStatus.BAD_REQUEST);
         }
@@ -73,7 +78,7 @@ public final class OrderController {
     public ResponseEntity<String> getOrderBookFormatted() {
         try {
             OrderBook orderBook = orderService.getOrderBook();
-            String formattedOrderBook = OrderBook.formatOrderBook(orderBook);
+            String formattedOrderBook = Formatter.formatOrderBook(orderBook);
             return new ResponseEntity<>(formattedOrderBook, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while fetching the order book.",
