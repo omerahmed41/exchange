@@ -25,4 +25,13 @@ public final class TradeController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/string")
+    public List<String> getAllTradesString() {
+        List<Trade> trades = tradeService.getAllTrades();
+        return tradeService.formatTrades(trades);
+    }
+
+
+
 }

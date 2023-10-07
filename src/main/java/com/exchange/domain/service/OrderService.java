@@ -2,10 +2,12 @@ package com.exchange.domain.service;
 
 import com.exchange.domain.OrderBook;
 import com.exchange.domain.entity.Order;
+import com.exchange.domain.entity.Trade;
 import com.exchange.infrastructure.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,13 +19,18 @@ public final class OrderService {
     @Autowired
     private TradeService tradeService;
 
+    private List<Trade> trades;
     private final OrderBook orderBook;
 
+    public List<Trade> getTrades() {
+        return trades;
+    }
     public OrderBook getOrderBook() {
         return orderBook;
     }
     public OrderService() {
         this.orderBook = new OrderBook();
+        this.trades = new ArrayList<>();
     }
 
     public void addOrder(Order order) {
@@ -31,6 +38,22 @@ public final class OrderService {
         createOrder(order);
         matchOrders();
     }
+
+    public List<Trade> addMultiple(List<Order> orders) {
+        for (Order order : orders) {
+            addOrder(order);
+        }
+        return this.trades;
+    }
+
+    public String addMultipleReturnString(List<Order> orders) {
+        for (Order order : orders) {
+            addOrder(order);
+        }
+        return tradeService.formatTradesString(trades) + OrderBook.formatOrderBook(this.orderBook);
+    }
+
+
 
     private void createOrder(Order order) {
         order.setRemainingQuantity(order.getQuantity());
@@ -53,8 +76,8 @@ public final class OrderService {
             int tradeQuantity = Math.min(buyOrder.getRemainingQuantity(), sellOrder.getRemainingQuantity());
 
             // Create and save a trade
-            tradeService.createTrade(buyOrder, sellOrder, tradePrice, tradeQuantity);
-
+            Trade trade = tradeService.createTrade(buyOrder, sellOrder, tradePrice, tradeQuantity);
+            this.trades.add(trade);
             int remainingBuyQuantity = buyOrder.getRemainingQuantity() - tradeQuantity;
             int remainingSellQuantity = sellOrder.getRemainingQuantity() - tradeQuantity;
 
