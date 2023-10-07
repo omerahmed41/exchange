@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 
 
-public final class OrderBook {
+public final class OrderBook implements Cloneable {
 
     private PriorityQueue<Order> buyOrders;
     private PriorityQueue<Order> sellOrders;
@@ -36,5 +36,14 @@ public final class OrderBook {
         return sellOrders;
     }
 
-
+    public OrderBook clone() {
+        OrderBook newOrderBook = new OrderBook();
+        for (Order buyOrder : this.buyOrders) {
+            newOrderBook.getBuyOrders().add(buyOrder);
+        }
+        for (Order sellOrder : this.sellOrders) {
+            newOrderBook.getSellOrders().add(sellOrder);
+        }
+        return newOrderBook;
+    }
 }

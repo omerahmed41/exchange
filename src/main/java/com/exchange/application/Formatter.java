@@ -5,21 +5,20 @@ import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 
 @Service
 public class Formatter {
     public static String formatOrderBook(OrderBook orderBook) {
+        OrderBook clonedOrderBook = orderBook.clone();
+        Queue<Order> buyOrders = clonedOrderBook.getBuyOrders();
+        Queue<Order> sellOrders = clonedOrderBook.getSellOrders();
         StringBuilder formattedOutput = new StringBuilder();
 
-        // This will iterate over the buyOrders and sellOrders queues simultaneously
-        Iterator<Order> buyIterator = orderBook.getBuyOrders().iterator();
-        Iterator<Order> sellIterator = orderBook.getSellOrders().iterator();
-
-        while (buyIterator.hasNext() || sellIterator.hasNext()) {
-            Order buyOrder = buyIterator.hasNext() ? buyIterator.next() : null;
-            Order sellOrder = sellIterator.hasNext() ? sellIterator.next() : null;
+        while (!buyOrders.isEmpty() || !sellOrders.isEmpty()) {
+            Order buyOrder = buyOrders.peek(); // Peek at the head of buyOrders
+            Order sellOrder = sellOrders.peek(); // Peek at the head of sellOrders
 
             String buyQuantity = buyOrder != null
                     ? String.format("%,9d", buyOrder.getRemainingQuantity()) : "         ";
@@ -32,9 +31,17 @@ public class Formatter {
                     ? String.format("%6d", sellOrder.getPrice()) : "      ";
 
             formattedOutput.append(String.format("%s %s | %s %s\n", buyQuantity, buyPrice, sellPrice, sellQuantity));
+
+            if (buyOrder != null) {
+                buyOrders.poll();
+            }
+            if (sellOrder != null) {
+                sellOrders.poll();
+            }
         }
 
         return formattedOutput.toString();
+
     }
 
     public static String formatTradesString(List<Trade> trades) {
