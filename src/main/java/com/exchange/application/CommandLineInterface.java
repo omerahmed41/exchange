@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,48 +31,52 @@ public class CommandLineInterface {
     @Bean
     public CommandLineRunner runCommand(ApplicationContext ctx, OrderService orderService)  throws Exception {
         return args -> {
-
+            writeOutput("", "output.txt");
+            writeOutput("", "error.txt");
             if (args.length != 0) {
 
 
-            if (args.length != 2) {
-                System.out.println("Usage: ./exchange <filename>");
-                return;
+                if (args.length != 2) {
+                    writeOutput("Usage: ./exchange <filename>", "error.txt");
+                    System.exit(SpringApplication.exit(ctx));
+                }
+
+
+
+                String filename = args[1];
+                List<String> lines = new ArrayList<>();
+
+                try {
+                    lines = Files.readAllLines(Paths.get(filename));
+
+                } catch (IOException e) {
+                    writeOutput("An error occurred while reading the file.", "error.txt");
+                    System.exit(SpringApplication.exit(ctx));
+                }
+                String joinedLines = String.join(" \n ", lines);
+
+                List<Order> orders = Parser.parseOrders(joinedLines);
+
+                Map<String, Object> result = orderService.addMultipleOrdersReturnOutput(orders);
+
+                String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
+                String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
+
+                writeOutput(trades + orderBook, "output.txt");
+
+                System.exit(SpringApplication.exit(ctx));
             }
-
-
-
-            String filename = args[1];
-            List<String> lines;
-
-            try {
-                lines = Files.readAllLines(Paths.get(filename));
-            } catch (IOException e) {
-                System.out.println("An error occurred while reading the file.");
-                return;
-            }
-            String joinedLines = String.join(" \n ", lines);
-
-            List<Order> orders = Parser.parseOrders(joinedLines);
-
-
-
-            Map<String, Object> result = orderService.addMultipleOrdersReturnOutput(orders);
-
-            String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
-            String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
-
-            System.out.println(trades + orderBook);
-            try {
-                FileWriter writer = new FileWriter("output.txt");
-                writer.write(trades + orderBook);
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.exit(SpringApplication.exit(ctx));
-        }
         };
-    };
+    }
+
+    private static void writeOutput(String response, String filename) {
+        try {
+            FileWriter writer = new FileWriter(filename);
+            writer.write(response);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
