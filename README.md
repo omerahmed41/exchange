@@ -103,7 +103,8 @@ make pre-commit-setup
 
 ## CI/CD
 
-(TBD)
+![CI CD workflow](README/CI_CD.jpeg)
+
 
 ---
 
