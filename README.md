@@ -15,7 +15,7 @@ An exchange enables buyers and sellers to discover each other and trade. Traders
 ### Command Line
 
 ```bash
-$ ./exchange < test2.txt
+$ ./exchange input.txt
 ```
 
 #### Example Input and Output

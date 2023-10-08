@@ -1,5 +1,6 @@
-package com.exchange.application;
+package com.exchange;
 
+import com.exchange.application.Formatter;
 import com.exchange.domain.entity.Trade;
 import com.exchange.domain.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
