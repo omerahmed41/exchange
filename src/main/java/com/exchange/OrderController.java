@@ -4,8 +4,9 @@ import com.exchange.application.Formatter;
 import com.exchange.application.Parser;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
+import com.exchange.domain.service.MatchingService;
 import com.exchange.domain.service.OrderService;
-import com.exchange.domain.OrderBook;
+import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,10 @@ public final class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private MatchingService matchingService;
+
     @Autowired
     private TradeService tradeService;
     @Autowired
@@ -30,7 +35,7 @@ public final class OrderController {
     @PostMapping("/add")
     public ResponseEntity<String> addOrder(@RequestBody Order order) {
         try {
-            orderService.addOrder(order);
+            matchingService.addOrder(order);
             return new ResponseEntity<>("Order added and processed successfully.", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while processing the order.", HttpStatus.BAD_REQUEST);
@@ -40,7 +45,7 @@ public final class OrderController {
     @PostMapping("/addMultiple")
     public ResponseEntity<?> addOrders(@RequestBody List<Order> orders) {
         try {
-            List<Trade> trades =  orderService.addMultiple(orders);
+            List<Trade> trades =  matchingService.addMultiple(orders);
             return new ResponseEntity<>(trades, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while processing the orders.", HttpStatus.BAD_REQUEST);
@@ -52,7 +57,7 @@ public final class OrderController {
         try {
             List<Order> orders = Parser.parseOrders(rawOrders);
 
-            Map<String, Object> result = orderService.addMultipleOrdersReturnOutput(orders);
+            Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
 
             String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
             String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
@@ -69,7 +74,7 @@ public final class OrderController {
     @GetMapping("/orderBook")
     public ResponseEntity<OrderBook> getOrderBook() {
         try {
-            OrderBook orderBook = orderService.getOrderBook();
+            OrderBook orderBook = matchingService.getOrderBook();
             return new ResponseEntity<>(orderBook, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,7 +84,7 @@ public final class OrderController {
     @GetMapping("/orderBookFormatted")
     public ResponseEntity<String> getOrderBookFormatted() {
         try {
-            OrderBook orderBook = orderService.getOrderBook();
+            OrderBook orderBook = matchingService.getOrderBook();
             String formattedOrderBook = Formatter.formatOrderBook(orderBook);
             return new ResponseEntity<>(formattedOrderBook, HttpStatus.OK);
         } catch (Exception e) {

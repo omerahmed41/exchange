@@ -3,9 +3,10 @@ package com.exchange;
 
 import com.exchange.application.Formatter;
 import com.exchange.application.Parser;
-import com.exchange.domain.OrderBook;
+import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
+import com.exchange.domain.service.MatchingService;
 import com.exchange.domain.service.OrderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,13 +26,13 @@ import java.util.Map;
 @Configuration
 public class CommandLineInterface {
 
-
     /**
      * This bean is intended to be a CommandLineRunner for initial application setup.
      * If extending this class, make sure to call this method at a suitable point in your subclass.
      */
     @Bean
-    public CommandLineRunner runCommand(ApplicationContext ctx, OrderService orderService)  throws Exception {
+    public CommandLineRunner runCommand(ApplicationContext ctx, OrderService orderService,
+                                        MatchingService matchingService)  throws Exception {
         return args -> {
             writeOutput("", "output.txt");
             writeOutput("", "error.txt");
@@ -59,7 +60,7 @@ public class CommandLineInterface {
 
                 List<Order> orders = Parser.parseOrders(joinedLines);
 
-                Map<String, Object> result = orderService.addMultipleOrdersReturnOutput(orders);
+                Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
 
                 String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
                 String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));

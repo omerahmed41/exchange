@@ -1,6 +1,6 @@
 package com.exchange.application;
 
-import com.exchange.domain.OrderBook;
+import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import org.springframework.stereotype.Service;

@@ -81,7 +81,8 @@ Various design patterns like Singleton, Builder, and Factory have been employed.
 
 ## Static Analysis and Style Checks
 
-(TBD)
+![Style check](README/style_check.png)
+
 
 ---
 

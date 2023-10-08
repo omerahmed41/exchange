@@ -1,4 +1,4 @@
-package com.exchange.domain;
+package com.exchange.domain.value.object;
 
 import com.exchange.domain.entity.Order;
 
