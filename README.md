@@ -93,6 +93,8 @@ JUnit and Mockito are used for unit and integration tests, with coverage reports
 
 ## Pre-commit Hooks
 
+![Pre commit hooks](README/pre-commit.png)
+
 To set up pre-commit hooks, run:
 
 ```bash
