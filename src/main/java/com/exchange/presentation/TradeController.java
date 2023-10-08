@@ -1,4 +1,4 @@
-package com.exchange;
+package com.exchange.presentation;
 
 import com.exchange.application.Formatter;
 import com.exchange.domain.entity.Trade;
