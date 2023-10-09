@@ -80,6 +80,7 @@ public class MatchingService {
             // Create and save a trade
             Trade trade = tradeService.createTrade(buyOrder, sellOrder, tradePrice, tradeQuantity);
             this.trades.add(trade);
+
             int remainingBuyQuantity = buyOrder.getRemainingQuantity() - tradeQuantity;
             int remainingSellQuantity = sellOrder.getRemainingQuantity() - tradeQuantity;
 

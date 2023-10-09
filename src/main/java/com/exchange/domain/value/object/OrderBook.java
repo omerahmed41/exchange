@@ -1,6 +1,7 @@
 package com.exchange.domain.value.object;
 
 import com.exchange.domain.entity.Order;
+import com.exchange.domain.enums.OrderSide;
 
 import java.util.PriorityQueue;
 import java.util.Comparator;
@@ -19,9 +20,9 @@ public final class OrderBook implements Cloneable {
     }
 
     public void addOrder(Order order) {
-        if (order.getSide() == 'B') {
+        if (order.getSide() == OrderSide.BUY.getCode()) {
             buyOrders.add(order);
-        } else if (order.getSide() == 'S') {
+        } else if (order.getSide() == OrderSide.SELL.getCode()) {
             sellOrders.add(order);
         }
     }
