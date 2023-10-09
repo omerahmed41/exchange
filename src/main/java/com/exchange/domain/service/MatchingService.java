@@ -36,7 +36,7 @@ public class MatchingService {
     }
 
 
-    public Map<String, Object> addMultipleOrdersReturnSummary(List<Order> orders) {
+    public Map<String, Object> addMultipleOrdersReturnOrderBookWithTrades(List<Order> orders) {
         for (Order order : orders) {
             addOrder(order);
         }
@@ -52,7 +52,7 @@ public class MatchingService {
         matchOrders();
     }
 
-    public List<Trade> addMultiple(List<Order> orders) {
+    public List<Trade> addMultipleOrders(List<Order> orders) {
         for (Order order : orders) {
             addOrder(order);
         }

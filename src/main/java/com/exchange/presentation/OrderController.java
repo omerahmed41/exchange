@@ -48,7 +48,7 @@ public final class OrderController {
     @PostMapping("/addMultiple")
     public ResponseEntity<?> addOrders(@RequestBody List<Order> orders) {
         try {
-            List<Trade> trades =  matchingService.addMultiple(orders);
+            List<Trade> trades =  matchingService.addMultipleOrders(orders);
             return new ResponseEntity<>(trades, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while processing the orders.", HttpStatus.BAD_REQUEST);

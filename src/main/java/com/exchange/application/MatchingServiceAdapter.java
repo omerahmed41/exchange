@@ -26,7 +26,7 @@ public class MatchingServiceAdapter implements IMatchingServiceAdapter {
     public String processOrdersFromString(String inputString) throws IOException {
             List<Order> orders = Parser.parseOrders(inputString);
 
-            Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
+            Map<String, Object> result = matchingService.addMultipleOrdersReturnOrderBookWithTrades(orders);
 
             String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
             String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
