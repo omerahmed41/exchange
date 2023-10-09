@@ -4,6 +4,7 @@ import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.infrastructure.OrderRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,10 @@ public class MatchingService {
     @Autowired
     private TradeService tradeService;
 
+    @Getter
     private List<Trade> trades;
 
-    public List<Trade> getTrades() {
-        return trades;
-    }
+    @Getter
     private final OrderBook orderBook;
 
     public MatchingService() {
@@ -35,9 +35,6 @@ public class MatchingService {
 
     }
 
-    public OrderBook getOrderBook() {
-        return orderBook;
-    }
 
     public Map<String, Object> addMultipleOrdersReturnSummary(List<Order> orders) {
         for (Order order : orders) {

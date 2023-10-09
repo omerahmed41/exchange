@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class Parser {
-    private static final int EXPECTED_FIELDS_COUNT = 4;
     private static final int QUANTITY_FIELD_ORDER = 3;
     private static final int PRICE_FIELD_ORDER = 2;
     private static final int SIDE_FIELD_ORDER = 1;
