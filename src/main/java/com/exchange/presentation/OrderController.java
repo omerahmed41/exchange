@@ -1,6 +1,7 @@
 package com.exchange.presentation;
 
 import com.exchange.application.Formatter;
+import com.exchange.application.MatchingServiceAdapter;
 import com.exchange.application.Parser;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -26,6 +26,9 @@ public final class OrderController {
 
     @Autowired
     private MatchingService matchingService;
+
+    @Autowired
+    private MatchingServiceAdapter matchingServiceAdapter;
 
     @Autowired
     private TradeService tradeService;
@@ -55,14 +58,8 @@ public final class OrderController {
     @PostMapping(value = "/addBulk", consumes = "text/plain")
     public ResponseEntity<?> addOrders(@RequestBody String rawOrders) {
         try {
-            List<Order> orders = Parser.parseOrders(rawOrders);
-
-            Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
-
-            String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
-            String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
-
-            return new ResponseEntity<>(trades + orderBook, HttpStatus.CREATED);
+            return new ResponseEntity<>(matchingServiceAdapter.processOrdersFromString(rawOrders),
+                    HttpStatus.CREATED);
 
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while processing the orders."

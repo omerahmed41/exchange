@@ -1,13 +1,6 @@
 package com.exchange.presentation;
 
-
-import com.exchange.application.Formatter;
-import com.exchange.application.Parser;
-import com.exchange.domain.value.object.OrderBook;
-import com.exchange.domain.entity.Order;
-import com.exchange.domain.entity.Trade;
-import com.exchange.domain.service.MatchingService;
-import com.exchange.domain.service.OrderService;
+import com.exchange.application.MatchingServiceAdapter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -18,8 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 
 
 @Configuration
@@ -30,8 +21,8 @@ public class CommandLineInterface {
      * If extending this class, make sure to call this method at a suitable point in your subclass.
      */
     @Bean
-    public CommandLineRunner runCommand(ApplicationContext ctx, OrderService orderService,
-                                        MatchingService matchingService)  throws Exception {
+    public CommandLineRunner runCommand(ApplicationContext ctx, MatchingServiceAdapter matchingServiceAdapter)
+            throws Exception {
         return args -> {
             writeOutput("", "output.txt");
             writeOutput("", "error.txt");
@@ -45,16 +36,9 @@ public class CommandLineInterface {
                 }
 
                 String filename = args[1];
-
                 String inputString = Files.readString(Path.of(filename));
-                List<Order> orders = Parser.parseOrders(inputString);
 
-                Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
-
-                String trades = Formatter.formatTradesString((List<Trade>) result.get("trades"));
-                String orderBook = Formatter.formatOrderBook((OrderBook) result.get("orderBook"));
-
-                writeOutput(trades + orderBook, "output.txt");
+                writeOutput(matchingServiceAdapter.processOrdersFromString(inputString), "output.txt");
 
                 System.exit(SpringApplication.exit(ctx));
             }

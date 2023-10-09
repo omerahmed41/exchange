@@ -1,5 +1,4 @@
 #!/bin/bash
-export SPRING_LOGGING_LEVEL_ROOT=OFF
 export SPRING_PROFILES_ACTIVE=command
 
 # Run the JAR file and pass all script arguments to Java program
