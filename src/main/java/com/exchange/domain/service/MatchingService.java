@@ -5,7 +5,6 @@ import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.infrastructure.OrderRepository;
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +24,10 @@ public class MatchingService {
     @Autowired
     private TradeService tradeService;
 
-    @Getter
     private List<Trade> trades;
 
-    @Getter
-    private final OrderBook orderBook;
+
+    private  OrderBook orderBook;
 
     public MatchingService() {
         this.orderBook = new OrderBook();

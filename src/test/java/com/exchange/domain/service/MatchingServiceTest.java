@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.domain.value.object.OrderBook;
+import com.exchange.infrastructure.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,10 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MatchingServiceTest {
@@ -28,6 +27,9 @@ public class MatchingServiceTest {
         @InjectMocks
         @Spy
         private TradeService tradeService;
+
+        @Mock
+        private OrderRepository orderRepository;
 
 
         @Mock
@@ -101,6 +103,31 @@ public class MatchingServiceTest {
         // Assert
         verify(orderService, times(1)).createOrder(mockOrder);
         verify(matchingService, times(1)).matchOrders(); //verify if matchOrders was called
+    }
+
+    @Test
+    public void testMatchOrders() {
+        // Arrange
+        Order buyOrder = new Order(1L,'B',23,23,50, LocalDateTime.now());
+        Order sellOrder = new Order(1L,'S',23,23,50, LocalDateTime.now());
+        orderBook = new OrderBook();
+        orderBook.addOrderToOrderBook(buyOrder);
+        orderBook.addOrderToOrderBook(sellOrder);
+        matchingService.setOrderBook(orderBook);
+        matchingService.setTradeService(tradeService);
+        matchingService.setOrderRepository(orderRepository);
+        Trade mockTrade = mock(Trade.class);
+
+
+        doReturn(mockTrade).when(tradeService).createTrade(any(), any(), anyInt(), anyInt());
+
+        // Act
+        matchingService.matchOrders();
+
+        // Assert
+        verify(tradeService, times(1)).createTrade(any(), any(), anyInt(), anyInt());
+        verify(orderRepository, times(1)).save(buyOrder);
+        verify(orderRepository, times(1)).save(sellOrder);
     }
 
 }
