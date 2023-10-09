@@ -21,12 +21,12 @@ public class Formatter {
             Order sellOrder = sellOrders.peek(); // Peek at the head of sellOrders
 
             String buyQuantity = buyOrder != null
-                    ? String.format("%,9d", buyOrder.getRemainingQuantity()) : "         ";
+                    ? String.format("%,11d", buyOrder.getRemainingQuantity()) : "           ";
             String buyPrice = buyOrder != null
                     ? String.format("%6d", buyOrder.getPrice()) : "      ";
 
             String sellQuantity = sellOrder != null
-                    ? String.format("%,9d", sellOrder.getRemainingQuantity()) : "         ";
+                    ? String.format("%,11d", sellOrder.getRemainingQuantity()) : "           ";
             String sellPrice = sellOrder != null
                     ? String.format("%6d", sellOrder.getPrice()) : "      ";
 
