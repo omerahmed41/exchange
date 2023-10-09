@@ -20,8 +20,14 @@ public final class TradeService {
     }
 
     public Trade createTrade(Order buyOrder, Order sellOrder, int tradePrice, int tradeQuantity) {
-        Trade trade = new Trade(UUID.randomUUID().toString(),
-                buyOrder.getOrderId(), sellOrder.getOrderId(), tradePrice, tradeQuantity);
+        Trade trade = Trade.builder()
+                .tradeId(UUID.randomUUID().toString())
+                .aggressorOrderId(buyOrder.getOrderId())
+                .restingOrderId(sellOrder.getOrderId())
+                .tradePrice(tradePrice)
+                .tradeQuantity(tradeQuantity)
+                .build();
+
         return tradeRepository.save(trade);
     }
 
