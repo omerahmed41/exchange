@@ -17,8 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -36,29 +35,19 @@ public class CommandLineInterface {
         return args -> {
             writeOutput("", "output.txt");
             writeOutput("", "error.txt");
-            if (args.length != 0) {
+            try {
 
+            if (args.length != 0) {
 
                 if (args.length != 2) {
                     writeOutput("Usage: ./exchange <filename>", "error.txt");
                     System.exit(SpringApplication.exit(ctx));
                 }
 
-
-
                 String filename = args[1];
-                List<String> lines = new ArrayList<>();
 
-                try {
-                    lines = Files.readAllLines(Paths.get(filename));
-
-                } catch (IOException e) {
-                    writeOutput("An error occurred while reading the file.", "error.txt");
-                    System.exit(SpringApplication.exit(ctx));
-                }
-                String joinedLines = String.join(" \n ", lines);
-
-                List<Order> orders = Parser.parseOrders(joinedLines);
+                String inputString = Files.readString(Path.of(filename));
+                List<Order> orders = Parser.parseOrders(inputString);
 
                 Map<String, Object> result = matchingService.addMultipleOrdersReturnSummary(orders);
 
@@ -69,7 +58,13 @@ public class CommandLineInterface {
 
                 System.exit(SpringApplication.exit(ctx));
             }
+            } catch (Exception e) {
+                writeOutput("An error occurred while processing the orders." + e.getMessage(), "error.txt");
+                System.exit(SpringApplication.exit(ctx));
+            }
+
         };
+
     }
 
     private static void writeOutput(String response, String filename) {

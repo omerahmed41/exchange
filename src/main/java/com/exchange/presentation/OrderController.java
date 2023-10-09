@@ -65,7 +65,8 @@ public final class OrderController {
             return new ResponseEntity<>(trades + orderBook, HttpStatus.CREATED);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("An error occurred while processing the orders.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("An error occurred while processing the orders."
+                    + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

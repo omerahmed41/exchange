@@ -21,10 +21,9 @@ public class Parser {
 
 
         for (String line : lines) {
+            OrderInputValidator.isValidLine(line);
+
             String[] fields = line.split(",");
-//                if (fields.length != EXPECTED_FIELDS_COUNT) {
-//                    return new ResponseEntity<>("Invalid input format.", HttpStatus.BAD_REQUEST);
-//                }
 
             Order order = new Order();
             order.setOrderId(Long.parseLong(fields[ID_FIELD_ORDER].trim()));
