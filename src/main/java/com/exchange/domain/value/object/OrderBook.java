@@ -19,7 +19,7 @@ public final class OrderBook implements Cloneable {
                 .thenComparing(Order::getTimestamp));
     }
 
-    public void addOrder(Order order) {
+    public void addOrderToOrderBook(Order order) {
         if (order.getSide() == OrderSide.BUY.getCode()) {
             buyOrders.add(order);
         } else if (order.getSide() == OrderSide.SELL.getCode()) {
