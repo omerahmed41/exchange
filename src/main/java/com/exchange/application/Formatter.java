@@ -1,6 +1,6 @@
 package com.exchange.application;
 
-import com.exchange.domain.value.object.OrderBook;
+import com.exchange.domain.value.object.IOrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import java.util.Queue;
 
 @Service
 public class Formatter {
-    public static String formatOrderBook(OrderBook orderBook) {
-        OrderBook clonedOrderBook = orderBook.clone();
-        Queue<Order> buyOrders = clonedOrderBook.getBuyOrders();
-        Queue<Order> sellOrders = clonedOrderBook.getSellOrders();
+    public static String formatOrderBook(IOrderBook orderBook) {
+        IOrderBook clonedIOrderBook = orderBook.clone();
+        Queue<Order> buyOrders = clonedIOrderBook.getBuyOrders();
+        Queue<Order> sellOrders = clonedIOrderBook.getSellOrders();
         StringBuilder formattedOutput = new StringBuilder();
 
         while (!buyOrders.isEmpty() || !sellOrders.isEmpty()) {

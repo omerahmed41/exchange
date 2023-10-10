@@ -1,5 +1,6 @@
 package com.exchange.domain.service;
 
+import com.exchange.domain.value.object.IOrderBook;
 import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
@@ -14,25 +15,25 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MatchingService {
+public class MatchingService implements IMatchingMultipleOrdersService {
 
 
     private final OrderRepository orderRepository;
 
-    private final OrderService orderService;
+    private final IOrderService orderService;
 
 
-    private final TradeService tradeService;
-
-    @Getter
-    private  List<Trade> trades;
+    private final ITradeService tradeService;
 
     @Getter
-    private  final OrderBook orderBook;
+    private final List<Trade> trades;
+
+    @Getter
+    private  final IOrderBook orderBook;
 
 
     @Autowired
-    public MatchingService(OrderRepository orderRepository, OrderService orderService, TradeService tradeService) {
+    public MatchingService(OrderRepository orderRepository, IOrderService orderService, ITradeService tradeService) {
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.tradeService = tradeService;
@@ -41,15 +42,17 @@ public class MatchingService {
     }
 
 
-    public MatchingService(OrderRepository orderRepository, OrderService orderService, TradeService tradeService,
-                           OrderBook orderBook, List<Trade> trades) {
+    public MatchingService(OrderRepository orderRepository,
+                           IOrderService orderService,
+                           ITradeService tradeService,
+                           IOrderBook orderBook,
+                           List<Trade> trades) {
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.tradeService = tradeService;
         this.orderBook = orderBook;
         this.trades = trades;
     }
-
 
 
     public Map<String, Object> addMultipleOrdersReturnOrderBookWithTrades(List<Order> orders) {
@@ -73,7 +76,7 @@ public class MatchingService {
         return this.trades;
     }
 
-    void matchOrders() {
+    public void matchOrders() {
         while (true) {
             Order buyOrder = orderBook.getBuyOrders().peek();
             Order sellOrder = orderBook.getSellOrders().peek();

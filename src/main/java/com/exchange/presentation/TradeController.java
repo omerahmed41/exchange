@@ -2,6 +2,7 @@ package com.exchange.presentation;
 
 import com.exchange.application.Formatter;
 import com.exchange.domain.entity.Trade;
+import com.exchange.domain.service.ITradeService;
 import com.exchange.domain.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/trades")
 public final class TradeController {
 
-    private final TradeService tradeService;
+    private final ITradeService tradeService;
 
     @Autowired
     public TradeController(TradeService tradeService) {

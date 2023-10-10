@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 
 
-public final class OrderBook implements Cloneable {
+public final class OrderBook implements IOrderBook {
 
     private PriorityQueue<Order> buyOrders;
     private PriorityQueue<Order> sellOrders;
@@ -19,6 +19,7 @@ public final class OrderBook implements Cloneable {
                 .thenComparing(Order::getTimestamp));
     }
 
+    @Override
     public void addOrderToOrderBook(Order order) {
         if (order.getSide() == OrderSide.BUY.getCode()) {
             buyOrders.add(order);
@@ -29,22 +30,25 @@ public final class OrderBook implements Cloneable {
 
 
 
+    @Override
     public PriorityQueue<Order> getBuyOrders() {
         return buyOrders;
     }
 
+    @Override
     public PriorityQueue<Order> getSellOrders() {
         return sellOrders;
     }
 
-    public OrderBook clone() {
-        OrderBook newOrderBook = new OrderBook();
+    @Override
+    public IOrderBook clone() {
+        IOrderBook newIOrderBook = new OrderBook();
         for (Order buyOrder : this.buyOrders) {
-            newOrderBook.getBuyOrders().add(buyOrder);
+            newIOrderBook.getBuyOrders().add(buyOrder);
         }
         for (Order sellOrder : this.sellOrders) {
-            newOrderBook.getSellOrders().add(sellOrder);
+            newIOrderBook.getSellOrders().add(sellOrder);
         }
-        return newOrderBook;
+        return newIOrderBook;
     }
 }

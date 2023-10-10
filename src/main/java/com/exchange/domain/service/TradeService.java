@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public final class TradeService {
+public final class TradeService implements ITradeService {
 
 
     private final TradeRepository tradeRepository;
@@ -20,10 +20,12 @@ public final class TradeService {
         this.tradeRepository = tradeRepository;
     }
 
+    @Override
     public List<Trade> getAllTrades() {
         return tradeRepository.findAll();
     }
 
+    @Override
     public Trade createTrade(Order buyOrder, Order sellOrder, int tradePrice, int tradeQuantity) {
         Trade trade = Trade.builder()
                 .tradeId(UUID.randomUUID().toString())

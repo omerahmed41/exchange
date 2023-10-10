@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public final class OrderService {
+public final class OrderService implements IOrderService {
 
 
     private final OrderRepository orderRepository;
@@ -18,12 +18,14 @@ public final class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    @Override
     public Order createOrder(Order order) {
         order.setRemainingQuantity(order.getQuantity());
         return orderRepository.save(order);
     }
 
 
+    @Override
     public List<Order> getOrdersHistory() {
         return orderRepository.findAll();
     }

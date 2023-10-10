@@ -5,8 +5,8 @@ import com.exchange.application.MatchingServiceAdapter;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.domain.service.MatchingService;
-import com.exchange.domain.service.OrderService;
-import com.exchange.domain.value.object.OrderBook;
+import com.exchange.domain.service.IOrderService;
+import com.exchange.domain.value.object.IOrderBook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public final class OrderController {
 
 
 
-    private final OrderService orderService;
+    private final IOrderService orderService;
 
     private final MatchingService matchingService;
 
@@ -28,7 +28,7 @@ public final class OrderController {
 
 
     @Autowired
-    public OrderController(OrderService orderService,
+    public OrderController(IOrderService orderService,
                            MatchingService matchingService,
                            MatchingServiceAdapter matchingServiceAdapter) {
         this.orderService = orderService;
@@ -71,9 +71,9 @@ public final class OrderController {
 
 
     @GetMapping("/orderBook")
-    public ResponseEntity<OrderBook> getOrderBook() {
+    public ResponseEntity<IOrderBook> getOrderBook() {
         try {
-            OrderBook orderBook = matchingService.getOrderBook();
+            IOrderBook orderBook = matchingService.getOrderBook();
             return new ResponseEntity<>(orderBook, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -83,7 +83,7 @@ public final class OrderController {
     @GetMapping("/orderBookFormatted")
     public ResponseEntity<String> getOrderBookFormatted() {
         try {
-            OrderBook orderBook = matchingService.getOrderBook();
+            IOrderBook orderBook = matchingService.getOrderBook();
             String formattedOrderBook = Formatter.formatOrderBook(orderBook);
             return new ResponseEntity<>(formattedOrderBook, HttpStatus.OK);
         } catch (Exception e) {

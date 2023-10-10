@@ -2,6 +2,7 @@ package com.exchange.domain.service;
 
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
+import com.exchange.domain.value.object.IOrderBook;
 import com.exchange.domain.value.object.OrderBook;
 import com.exchange.infrastructure.OrderRepository;
 import org.junit.jupiter.api.Assertions;
@@ -28,17 +29,17 @@ public class MatchingServiceTest {
         @Spy
         private MatchingService matchingService;
         @Mock
-        private TradeService tradeService;
+        private ITradeService tradeService;
 
         @Mock
         private OrderRepository orderRepository;
 
 
         @Mock
-        private OrderBook orderBook;
+        private IOrderBook orderBook;
 
         @Mock
-        private OrderService orderService;
+        private IOrderService orderService;
 
         @Mock
         private List<Trade> trades;
