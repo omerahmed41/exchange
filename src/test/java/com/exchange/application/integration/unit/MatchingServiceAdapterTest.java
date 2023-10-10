@@ -1,8 +1,10 @@
 package com.exchange.application.integration.unit;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.exchange.application.MatchingServiceAdapter;
+import com.exchange.domain.exceptions.InvalidOrderInputException;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class MatchingServiceAdapterTest {
 
 
     @Test
-    public void testProcessOrdersFromStringExample1() throws IOException {
+    public void testProcessOrdersFromStringNoTrades() throws IOException {
         String input = "10000,B,98,25500\n10005,S,105,20000\n10001,S,100,500\n10002,S,100,10000\n10003,B,99,50000\n10004,S,103,100";
         String expectedOutput = "     50,000     99 |    100         500\n     25,500     98 |    100      10,000\n                   |    103         100\n                   |    105      20,000\n";
 
@@ -31,7 +33,16 @@ public class MatchingServiceAdapterTest {
     }
 
     @Test
-    public void testProcessOrdersFromStringExample2() throws IOException {
+    public void testProcessOrdersFromStringThrowsException() throws IOException {
+        String input = "10000,wrongChar,98,25500\n10005,S,105,20000\n10001,S,100,500\n10002,S,100,10000\n10003,B,99,50000\n10004,S,103,100";
+        assertThrows(InvalidOrderInputException.class, () -> {
+            matchingServiceAdapter.processOrdersFromString(input);
+        });
+
+    }
+
+    @Test
+    public void testProcessOrdersFromString() throws IOException {
         String input = "10000,B,98,25500\n" +
                 "10005,S,105,20000\n" +
                 "10001,S,100,500\n" +

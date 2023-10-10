@@ -92,6 +92,8 @@ JUnit and Mockito are used for unit and integration tests, with coverage reports
 ```bash
 ./mvnw test 
 ```
+![Style check](README/run_tests.png)
+
 * To run only integrations tests
 
 ```bash
