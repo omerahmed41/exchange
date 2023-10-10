@@ -17,8 +17,8 @@ public class Formatter {
         StringBuilder formattedOutput = new StringBuilder();
 
         while (!buyOrders.isEmpty() || !sellOrders.isEmpty()) {
-            Order buyOrder = buyOrders.peek(); // Peek at the head of buyOrders
-            Order sellOrder = sellOrders.peek(); // Peek at the head of sellOrders
+            Order buyOrder = buyOrders.peek();
+            Order sellOrder = sellOrders.peek();
 
             String buyQuantity = buyOrder != null
                     ? String.format("%,11d", buyOrder.getRemainingQuantity()) : "           ";
@@ -52,7 +52,7 @@ public class Formatter {
             sb.append(trade.getRestingOrderId()).append(",");
             sb.append(trade.getTradePrice()).append(",");
             sb.append(trade.getTradeQuantity());
-            sb.append("\n");  // Add newline to separate each trade
+            sb.append("\n");
         }
         return sb.toString();
     }

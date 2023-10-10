@@ -4,7 +4,7 @@ import com.exchange.domain.value.object.OrderBook;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.infrastructure.OrderRepository;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,26 +14,42 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Data
 public class MatchingService {
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrderService orderService;
+
+
+    private final OrderRepository orderRepository;
+
+    private final OrderService orderService;
+
+
+    private final TradeService tradeService;
+
+    @Getter
+    private  List<Trade> trades;
+
+    @Getter
+    private  final OrderBook orderBook;
+
 
     @Autowired
-    private TradeService tradeService;
-
-    private List<Trade> trades;
-
-
-    private  OrderBook orderBook;
-
-    public MatchingService() {
+    public MatchingService(OrderRepository orderRepository, OrderService orderService, TradeService tradeService) {
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
+        this.tradeService = tradeService;
         this.orderBook = new OrderBook();
         this.trades = new ArrayList<>();
-
     }
+
+
+    public MatchingService(OrderRepository orderRepository, OrderService orderService, TradeService tradeService,
+                           OrderBook orderBook, List<Trade> trades) {
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
+        this.tradeService = tradeService;
+        this.orderBook = orderBook;
+        this.trades = trades;
+    }
+
 
 
     public Map<String, Object> addMultipleOrdersReturnOrderBookWithTrades(List<Order> orders) {

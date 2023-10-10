@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 @Builder
 public class Trade {
     @Id
-    private String tradeId; // A unique identifier for each trade
+    private String tradeId;
     private Long aggressorOrderId;
     private Long restingOrderId;
     private int tradePrice;

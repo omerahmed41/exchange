@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @Table(name = "orders_table")
 public class Order {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long orderId;
-    private char side; // 'B' for Buy, 'S' for Sell
+    private char side;
     private int price;
     private int quantity;
 

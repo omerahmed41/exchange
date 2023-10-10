@@ -1,5 +1,4 @@
 package com.exchange.domain.service;
-import static org.mockito.Mockito.*;
 
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
@@ -14,7 +13,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MatchingServiceTest {
@@ -23,9 +27,7 @@ public class MatchingServiceTest {
         @InjectMocks
         @Spy
         private MatchingService matchingService;
-
-        @InjectMocks
-        @Spy
+        @Mock
         private TradeService tradeService;
 
         @Mock
@@ -35,15 +37,14 @@ public class MatchingServiceTest {
         @Mock
         private OrderBook orderBook;
 
-        @InjectMocks
-        @Spy
+        @Mock
         private OrderService orderService;
 
         @Mock
         private List<Trade> trades;
 
-        @Test
-        public void testAddMultipleOrders() {
+    @Test
+    public void testAddMultipleOrders() {
             // Arrange
             Order mockOrder1 = mock(Order.class);
             Order mockOrder2 = mock(Order.class);
@@ -86,9 +87,6 @@ public class MatchingServiceTest {
 
     @Test
     public void testAddOrder() {
-        orderService = mock(OrderService.class);
-        orderBook = mock(OrderBook.class);
-        matchingService.setOrderService(orderService);
 
         // Arrange
         Order mockOrder = mock(Order.class);
@@ -102,7 +100,7 @@ public class MatchingServiceTest {
 
         // Assert
         verify(orderService, times(1)).createOrder(mockOrder);
-        verify(matchingService, times(1)).matchOrders(); //verify if matchOrders was called
+        verify(matchingService, times(1)).matchOrders();
     }
 
     @Test
@@ -113,9 +111,13 @@ public class MatchingServiceTest {
         orderBook = new OrderBook();
         orderBook.addOrderToOrderBook(buyOrder);
         orderBook.addOrderToOrderBook(sellOrder);
-        matchingService.setOrderBook(orderBook);
-        matchingService.setTradeService(tradeService);
-        matchingService.setOrderRepository(orderRepository);
+        trades = new ArrayList<>();
+        matchingService = new MatchingService(orderRepository,
+                orderService,
+                tradeService,
+                orderBook,
+                trades);
+
         Trade mockTrade = mock(Trade.class);
 
 
