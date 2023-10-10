@@ -2,13 +2,11 @@ package com.exchange.presentation;
 
 import com.exchange.application.Formatter;
 import com.exchange.application.MatchingServiceAdapter;
-import com.exchange.application.Parser;
 import com.exchange.domain.entity.Order;
 import com.exchange.domain.entity.Trade;
 import com.exchange.domain.service.MatchingService;
 import com.exchange.domain.service.OrderService;
 import com.exchange.domain.value.object.OrderBook;
-import com.exchange.domain.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +19,22 @@ public final class OrderController {
 
 
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+
+    private final MatchingService matchingService;
+
+    private final MatchingServiceAdapter matchingServiceAdapter;
+
+
 
     @Autowired
-    private MatchingService matchingService;
-
-    @Autowired
-    private MatchingServiceAdapter matchingServiceAdapter;
-
-    @Autowired
-    private TradeService tradeService;
-    @Autowired
-    private Parser parser;
+    public OrderController(OrderService orderService,
+                           MatchingService matchingService,
+                           MatchingServiceAdapter matchingServiceAdapter) {
+        this.orderService = orderService;
+        this.matchingService = matchingService;
+        this.matchingServiceAdapter = matchingServiceAdapter;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addOrder(@RequestBody Order order) {

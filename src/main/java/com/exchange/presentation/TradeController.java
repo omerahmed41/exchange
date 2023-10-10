@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/api/trades")
 public final class TradeController {
 
+    private final TradeService tradeService;
+
     @Autowired
-    private TradeService tradeService;
+    public TradeController(TradeService tradeService) {
+        this.tradeService = tradeService;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<Trade>> getAllTrades() {

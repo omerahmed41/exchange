@@ -12,8 +12,13 @@ import java.util.UUID;
 @Service
 public final class TradeService {
 
+
+    private final TradeRepository tradeRepository;
+
     @Autowired
-    private TradeRepository tradeRepository;
+    public TradeService(TradeRepository tradeRepository) {
+        this.tradeRepository = tradeRepository;
+    }
 
     public List<Trade> getAllTrades() {
         return tradeRepository.findAll();

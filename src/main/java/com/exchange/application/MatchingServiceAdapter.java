@@ -14,13 +14,13 @@ import java.util.Map;
 public class MatchingServiceAdapter implements IMatchingServiceAdapter {
 
 
-    @Autowired
-    private MatchingService matchingService;
+    private final MatchingService matchingService;
 
 
     @Autowired
-    private Parser parser;
-
+    public MatchingServiceAdapter(MatchingService matchingService) {
+        this.matchingService = matchingService;
+    }
 
     @Override
     public String processOrdersFromString(String inputString) throws IOException {
