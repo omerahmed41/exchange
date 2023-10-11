@@ -11,11 +11,14 @@ An exchange enables buyers and sellers to discover each other and trade. Traders
 ---
 
 ## Getting Started
-
-### Command Line
-
+You have two options to interact with the app.
+### 1. Command Line
+First option cmd, open terminal then make sure you on project path then run
 ```bash
 $ ./exchange input.txt
+```
+```bash
+$ ./exchange input2.txt
 ```
 
 #### Example Input and Output
@@ -28,12 +31,17 @@ Input example
 * 10004,S,103,100
 * 10006,B,105,16000
 
+
 ![CMD output example](README/cmd_example.png)
 
 
-### REST APIs
-
-Access the application via HTTP requests. Swagger documentation is available for navigating between different endpoints.
+### 2. REST APIs
+to start the app run this command, it will select port 8080, 
+#### to select random port set`server.port=0` in the `src/main/resources/application.properties`.
+```bash
+./mvnw spring-boot:run
+```
+Access the application via HTTP requests on http://localhost:8080. Swagger documentation is available for navigating between different endpoints.
 ![Swagger OPEN API](README/swagger.jpeg)
 
 ---
@@ -65,22 +73,24 @@ Access the application via HTTP requests. Swagger documentation is available for
 
 ## Architecture
 
-The project follows a three-layered structure:
-- Application Layer
-- Domain Layer
-- Infrastructure Layer
-- Database Layer
+The project follows the clean Architecture:
+- Application Layer.
+- Domain Layer.
+- Infrastructure Layer.
+- Database Layer.
 
+* Each layer can call only the layer down to it. this architecture make it easy to replay DB, any service or any layer below the top ones.
 ---
 
 ## Design Patterns, Dependency Injection, and SOLID Principles
 
-Various design patterns like Singleton, Builder, and Factory have been employed. The project also adheres to SOLID principles and uses Dependency Injection for loose coupling.
+Various design patterns like Singleton, Builder, and Factory have been implemented.
+The project also adheres to SOLID principles and uses Dependency Injection for loose coupling.
 
 ---
 
 ## Static Analysis and Style Checks
-
+We added package for style checking on pre-commit hook or CI/CD.
 ![Style check](README/style_check.png)
 
 
@@ -124,7 +134,7 @@ make pre-commit-setup
 ---
 
 ## CI/CD
-
+each time you push code to git repository and workflow will get triggered.
 ![CI CD workflow](README/CI_CD.jpeg)
 
 
