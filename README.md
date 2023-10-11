@@ -79,6 +79,8 @@ The project follows the clean Architecture:
 - Infrastructure Layer.
 - Database Layer.
 
+![Style check](README/Clean-Architecture.png)
+
 * Each layer can call only the layer down to it. this architecture make it easy to replay DB, any service or any layer below the top ones.
 ---
 
